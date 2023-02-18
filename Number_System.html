@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Converter | Number System</title>
+    <style>
+        body {
+            font-family: cursive;
+            font-size: 20px;
+            background: #7ba4ff36;
+        }
+
+        #heading {
+            font-size: 30px;
+            background: #7ba4ff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .box {
+            margin-top: 6px;
+        }
+
+        .input-box {
+            display: block;
+            margin: auto;
+            font-size: 18px;
+            border-radius: 8px;
+            margin-top: 6px;
+            padding: 2px 5px;
+            width: 90%;
+        }
+
+        #error {
+            text-align: center;
+            margin: 15px;
+            background: #7ba4ff;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            background: black;
+            color: white;
+            left: 0;
+            padding: 2px 12px;
+            border-top-right-radius: 15px;
+        }
+
+        #name {
+            color: #7ba4ff;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="heading">Base Converter System</h2>
+    <div id="error"></div>
+    <form action="">
+        <div class="box">
+            <label for="binary">Binary:</label>
+            <input class="input-box" id="binary-input" type="text" oninput="binaryInputEvent(this.value)" placeholder="Enter a binary number">
+        </div>
+        <div class="box">
+            <label for="octal">Octal:</label>
+            <input class="input-box" id="octal-input" type="text" oninput="octalInputEvent(this.value)" placeholder="Enter a decimal number">
+        </div>
+        <div class="box">
+            <label for="decimal">Decimal:</label>
+            <input class="input-box" id="decimal-input" type="text" oninput="decimalInputEvent(this.value)" placeholder="Enter a octal number">
+        </div>
+        <div class="box">
+            <label for="hexa">Hexa-Decimal:</label>
+            <input class="input-box" id="hexa-input" type="text" oninput="hexaInputEvent(this.value)" placeholder="Enter a hexa-decimal number">
+        </div>
+    </form>
+    <footer>
+        <div>Developed By <span id="name">Ali Amir</span></div>
+    </footer>
+    <script>
+        var binaryInput = document.getElementById('binary-input');
+        var octalInput = document.getElementById('octal-input');
+        var decimalInput = document.getElementById('decimal-input');
+        var hexaInput = document.getElementById('hexa-input');
+        var errorMessageBox = document.getElementById('error');
+        var errorMessage = '';
+        
+        function binaryInputEvent(value) {
+            var isBinary = isValid(value, 2);
+            if (isBinary == 1) {
+                errorMessageBox.innerHTML = '';
+                octalInput.value = parseInt(value, 2).toString(8);
+                decimalInput.value = parseInt(value, 2).toString(10);
+                hexaInput.value = parseInt(value, 2).toString(16).toUpperCase();
+            } else {
+                errorMessage = 'Please enter a valid number for this base!';
+                if(isBinary == -1){
+                    errorMessage = '';
+                }else if(isBinary == 2){
+                    errorMessage = 'Only whole numbers are Supported.';
+                }
+                octalInput.value = '';
+                decimalInput.value = '';
+                hexaInput.value = '';
+                errorMessageBox.innerHTML = errorMessage;
+            }
+        }
+        function octalInputEvent(value) {
+            var isOctal = isValid(value, 8);
+            if (isOctal == 1) {
+                errorMessageBox.innerHTML = '';
+                binaryInput.value = parseInt(value, 8).toString(2);
+                decimalInput.value = parseInt(value, 8).toString(10);
+                hexaInput.value = parseInt(value, 8).toString(16).toUpperCase();
+            } else {
+                errorMessage = 'Please enter a valid number for this base!';
+                if(isOctal == -1){
+                    errorMessage = '';
+                }else if(isOctal == 2){
+                    errorMessage = 'Only whole numbers are Supported.';
+                }
+                binaryInput.value = '';
+                decimalInput.value = '';
+                hexaInput.value = '';
+                errorMessageBox.innerHTML = errorMessage;
+            }
+        }
+        function decimalInputEvent(value) {
+            var isDecimal = isValid(value, 10);
+            if (isDecimal == 1) {
+                errorMessageBox.innerHTML = '';
+                binaryInput.value = parseInt(value, 10).toString(2);
+                octalInput.value = parseInt(value, 10).toString(8);
+                hexaInput.value = parseInt(value, 10).toString(16).toUpperCase();
+            } else {
+                errorMessage = 'Please enter a valid number for this base!';
+                if(isDecimal == -1){
+                    errorMessage = '';
+                }else if(isDecimal == 2){
+                    errorMessage = 'Only whole numbers are Supported.';
+                }
+                binaryInput.value = '';
+                octalInput.value = '';
+                hexaInput.value = '';
+                errorMessageBox.innerHTML = errorMessage;
+            }
+        }
+        function hexaInputEvent(value) {
+            value = value.toUpperCase();
+            var isHexa = isValid(value, 16);
+            if (isHexa == 1) {
+                errorMessageBox.innerHTML = '';
+                binaryInput.value = parseInt(value, 16).toString(2);
+                octalInput.value = parseInt(value, 16).toString(8);
+                decimalInput.value = parseInt(value, 16).toString(10);
+            } else {
+                errorMessage = 'Please enter a valid number for this base!';
+                if(isHexa == -1){
+                    errorMessage = '';
+                }else if(isHexa == 2){
+                    errorMessage = 'Only whole numbers are Supported.';
+                }
+                binaryInput.value = '';
+                octalInput.value = '';
+                decimalInput.value = '';
+                errorMessageBox.innerHTML = errorMessage;
+            }
+        }
+
+        function isValid(number, base) {
+            var numbers = {
+                '2': ['0', '1'],
+                '8': ['0', '1', '2', '3', '4', '5', '6', '7'],
+                '10': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                '16': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+            }
+            if (number == '')
+                return -1;
+            if(number.includes('.'))
+                return 2
+            for (var i = 0; i < number.length; i++) {
+                if (!(numbers[base].includes(number[i]))) {
+                    return 0;
+                }
+            }
+            return 1;
+        }
+
+    </script>
+</body>
+
+</html>
