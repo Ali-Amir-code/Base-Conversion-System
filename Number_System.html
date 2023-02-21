@@ -63,19 +63,23 @@
     <form action="">
         <div class="box">
             <label for="binary">Binary:</label>
-            <input class="input-box" id="binary-input" type="text" oninput="binaryInputEvent(this.value)" placeholder="Enter a binary number">
+            <input class="input-box" id="binary-input" type="text" oninput="binaryInputEvent(this.value)"
+                placeholder="Enter a binary number">
         </div>
         <div class="box">
             <label for="octal">Octal:</label>
-            <input class="input-box" id="octal-input" type="text" oninput="octalInputEvent(this.value)" placeholder="Enter a decimal number">
+            <input class="input-box" id="octal-input" type="text" oninput="octalInputEvent(this.value)"
+                placeholder="Enter an octal number">
         </div>
         <div class="box">
             <label for="decimal">Decimal:</label>
-            <input class="input-box" id="decimal-input" type="text" oninput="decimalInputEvent(this.value)" placeholder="Enter a octal number">
+            <input class="input-box" id="decimal-input" type="text" oninput="decimalInputEvent(this.value)"
+                placeholder="Enter a decimal number">
         </div>
         <div class="box">
             <label for="hexa">Hexa-Decimal:</label>
-            <input class="input-box" id="hexa-input" type="text" oninput="hexaInputEvent(this.value)" placeholder="Enter a hexa-decimal number">
+            <input class="input-box" id="hexa-input" type="text" oninput="hexaInputEvent(this.value)"
+                placeholder="Enter a hexa-decimal number">
         </div>
     </form>
     <footer>
@@ -88,21 +92,15 @@
         var hexaInput = document.getElementById('hexa-input');
         var errorMessageBox = document.getElementById('error');
         var errorMessage = '';
-        
+
         function binaryInputEvent(value) {
             var isBinary = isValid(value, 2);
-            if (isBinary == 1) {
+            if (isBinary) {
                 errorMessageBox.innerHTML = '';
-                octalInput.value = parseInt(value, 2).toString(8);
-                decimalInput.value = parseInt(value, 2).toString(10);
-                hexaInput.value = parseInt(value, 2).toString(16).toUpperCase();
+                octalInput.value = binaryToOctal(value);
+                decimalInput.value = binaryToDecimal(value);
+                hexaInput.value = binaryToHexa(value);
             } else {
-                errorMessage = 'Please enter a valid number for this base!';
-                if(isBinary == -1){
-                    errorMessage = '';
-                }else if(isBinary == 2){
-                    errorMessage = 'Only whole numbers are Supported.';
-                }
                 octalInput.value = '';
                 decimalInput.value = '';
                 hexaInput.value = '';
@@ -111,18 +109,12 @@
         }
         function octalInputEvent(value) {
             var isOctal = isValid(value, 8);
-            if (isOctal == 1) {
+            if (isOctal) {
                 errorMessageBox.innerHTML = '';
-                binaryInput.value = parseInt(value, 8).toString(2);
-                decimalInput.value = parseInt(value, 8).toString(10);
-                hexaInput.value = parseInt(value, 8).toString(16).toUpperCase();
+                binaryInput.value = ocatlToBinary(value);
+                decimalInput.value = octalTodecimal(value);
+                hexaInput.value = octalToHexa(value);
             } else {
-                errorMessage = 'Please enter a valid number for this base!';
-                if(isOctal == -1){
-                    errorMessage = '';
-                }else if(isOctal == 2){
-                    errorMessage = 'Only whole numbers are Supported.';
-                }
                 binaryInput.value = '';
                 decimalInput.value = '';
                 hexaInput.value = '';
@@ -131,18 +123,12 @@
         }
         function decimalInputEvent(value) {
             var isDecimal = isValid(value, 10);
-            if (isDecimal == 1) {
+            if (isDecimal) {
                 errorMessageBox.innerHTML = '';
-                binaryInput.value = parseInt(value, 10).toString(2);
-                octalInput.value = parseInt(value, 10).toString(8);
-                hexaInput.value = parseInt(value, 10).toString(16).toUpperCase();
+                binaryInput.value = decimalToBinary(value);
+                octalInput.value = decimalToOctal(value);
+                hexaInput.value = decimalToHexa(value);
             } else {
-                errorMessage = 'Please enter a valid number for this base!';
-                if(isDecimal == -1){
-                    errorMessage = '';
-                }else if(isDecimal == 2){
-                    errorMessage = 'Only whole numbers are Supported.';
-                }
                 binaryInput.value = '';
                 octalInput.value = '';
                 hexaInput.value = '';
@@ -152,18 +138,12 @@
         function hexaInputEvent(value) {
             value = value.toUpperCase();
             var isHexa = isValid(value, 16);
-            if (isHexa == 1) {
+            if (isHexa) {
                 errorMessageBox.innerHTML = '';
-                binaryInput.value = parseInt(value, 16).toString(2);
-                octalInput.value = parseInt(value, 16).toString(8);
-                decimalInput.value = parseInt(value, 16).toString(10);
+                binaryInput.value = hexaToBinary(value);
+                octalInput.value = hexaToOctal(value);
+                decimalInput.value = hexaTodecimal(value);
             } else {
-                errorMessage = 'Please enter a valid number for this base!';
-                if(isHexa == -1){
-                    errorMessage = '';
-                }else if(isHexa == 2){
-                    errorMessage = 'Only whole numbers are Supported.';
-                }
                 binaryInput.value = '';
                 octalInput.value = '';
                 decimalInput.value = '';
@@ -173,21 +153,115 @@
 
         function isValid(number, base) {
             var numbers = {
-                '2': ['0', '1'],
-                '8': ['0', '1', '2', '3', '4', '5', '6', '7'],
-                '10': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-                '16': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+                '2': ['0', '1','.'],
+                '8': ['0', '1', '2', '3', '4', '5', '6', '7','.'],
+                '10': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9','.'],
+                '16': ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F','.']
             }
-            if (number == '')
-                return -1;
-            if(number.includes('.'))
-                return 2
+            if (number == '') {
+                errorMessage = '';
+                return false;
+            }
             for (var i = 0; i < number.length; i++) {
                 if (!(numbers[base].includes(number[i]))) {
-                    return 0;
+                    errorMessage = 'Please enter a valid number for this base.'
+                    return false;
                 }
             }
-            return 1;
+            return true;
+        }
+
+        function binaryToOctal(number) {
+            return decimalTo(toDecimal(number, 2), 8);
+        }
+
+        function binaryToDecimal(number) {
+            return toDecimal(number, 2);
+
+        }
+
+        function binaryToHexa(number) {
+            return decimalTo(toDecimal(number, 2), 16);
+        }
+
+        function ocatlToBinary(number) {
+            return decimalTo(toDecimal(number, 8), 2);
+        }
+
+        function octalTodecimal(number) {
+            return toDecimal(number, 8);
+        }
+        function octalToHexa(number) {
+            return decimalTo(toDecimal(number, 8), 16);
+        }
+
+        function decimalToBinary(number) {
+            return decimalTo(number, 2);
+        }
+
+        function decimalToOctal(number) {
+            return decimalTo(number, 8);
+
+        }
+
+        function decimalToHexa(number) {
+            return decimalTo(number, 16);
+
+        }
+
+        function hexaToBinary(number) {
+            return decimalTo(toDecimal(number, 16), 2);
+        }
+
+        function hexaToOctal(number) {
+            return decimalTo(toDecimal(number, 16), 8);
+        }
+
+        function hexaTodecimal(number) {
+            return toDecimal(number, 16);
+        }
+
+
+        function toDecimal(number, base) {
+            var arr = number.split('.');
+            if (!(number.includes('.') || arr[1] == '')) {
+                return parseInt(number, base).toString(10).toUpperCase();
+            }
+            var convertedNumber = parseInt(arr[0], base);
+            var afterdecimalNumber = 0;
+            for (var i = 1; i <= arr[1].length; i++) {
+                afterdecimalNumber += parseInt(arr[1][i - 1]) * Math.pow(base, -i);
+            }
+            return (convertedNumber + afterdecimalNumber).toString().toUpperCase();
+        }
+
+        function decimalTo(number, base) {
+            var arr = number.split('.');
+            if (!(number.includes('.') || arr[1] == '')) {
+                return parseInt(number, 10).toString(base).toUpperCase();
+            }
+            var convertedNumber = parseInt(arr[0], 10).toString(base);
+            var afterdecimal = '.' + arr[1];
+            convertedNumber += afterDecimalMultiply(afterdecimal, base);
+            return convertedNumber.toUpperCase();
+        }
+
+        function afterDecimalMultiply(afterdecimal, base) {
+            var number = '.';
+            for (var i = 0, temp; i < 30; i++) {
+                temp = (parseFloat(afterdecimal) * base).toString();
+                temp = temp.split('.');
+                if (isNaN(temp[0])) {
+                    break;
+                }
+                if (base == 16) {
+                    number += parseInt(temp[0], 10).toString(16);
+                } else {
+                    number += temp[0];
+                }
+                afterdecimal = '.' + temp[1];
+            }
+            return number;
         }
 
     </script>
